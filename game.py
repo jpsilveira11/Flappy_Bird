@@ -125,3 +125,26 @@ class Pipe:
         else:
             return False
 
+class Ground:
+    SPEED=5
+    WIDTH=GROUND_SPRITE.get_width()
+    SPRITE=GROUND_SPRITE
+
+    def __init__(self,y):
+        self.y=y
+        self.x0=0
+        self.x1=self.WIDTH
+
+    def move(self):
+        self.x0-=self.SPEED
+        self.x1-=self.SPEED
+
+        if self.x1+self.WIDTH<0:
+            self.x0=self.x0+self.WIDTH
+        if self.x1+self.WIDTH<0:
+            self.x1=self.x1+self.WIDTH
+
+    def draw(self,screen):
+        screen.blit(self.SPRITE,(self.x0,self.y))
+        screen.blit(self.SPRITE,(self.x1,self.y))
+
