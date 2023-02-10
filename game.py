@@ -139,10 +139,10 @@ class Ground:
         self.x0-=self.SPEED
         self.x1-=self.SPEED
 
+        if self.x0+self.WIDTH<0:
+            self.x0=self.x1+self.WIDTH
         if self.x1+self.WIDTH<0:
-            self.x0=self.x0+self.WIDTH
-        if self.x1+self.WIDTH<0:
-            self.x1=self.x1+self.WIDTH
+            self.x1=self.x0+self.WIDTH
 
     def draw(self,screen):
         screen.blit(self.SPRITE,(self.x0,self.y))
@@ -170,7 +170,7 @@ def main():
 
     running=True
     while running:
-        clock.tick(60)
+        clock.tick(30)
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 running=False
@@ -201,7 +201,7 @@ def main():
 
         if add_pipe:
             score+=1
-            pipe.append(Pipe(600))
+            pipes.append(Pipe(600))
         for pipe in remove_pipes:
             pipes.remove(pipe)
 
