@@ -195,10 +195,9 @@ def main():
                 if not pipe.passed and bird.x>pipe.x:
                     pipe.passed=True
                     add_pipe=True
-        
-        pipe.move()
-        if pipe.x+pipe.TOP_PIPE.get_width()<0:
-            remove_pipes.append(pipe)
+            pipe.move()
+            if pipe.x+pipe.TOP_PIPE.get_width()<0:
+                remove_pipes.append(pipe)
 
         if add_pipe:
             score+=1
