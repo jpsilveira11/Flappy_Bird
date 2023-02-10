@@ -75,7 +75,7 @@ class Bird:
             self.sprite_count=self.ANIMATION_SPEED*2
 
         rotated_sprite=pygame.transform.rotate(self.sprite,self.angle)
-        sprite_center=self.sprite.get_rect(topleft=(self.x,self.y))
+        sprite_center=self.sprite.get_rect(topleft=(self.x,self.y)).center
         rectangle=rotated_sprite.get_rect(center=sprite_center)
         screen.blit(rotated_sprite,rectangle.topleft)
 
@@ -156,7 +156,7 @@ def draw_screen(screen,birds,pipes,ground,score):
         pipe.draw(screen)
     
     text=FONT.render(f'Score: {score}',1,(255,255,255))
-    screen.blit(text,(SCREEN_WIDTH-10-text.get_width,10))
+    screen.blit(text,(SCREEN_WIDTH-10-text.get_width(),10))
     ground.draw(screen)
     pygame.display.update()
 
@@ -210,7 +210,7 @@ def main():
             if(bird.y+bird.sprite.get_height())>ground.y or bird.y<0:
                 birds.pop(counter)
 
-        draw_screen(screen,bird,pipe,ground,score)
+        draw_screen(screen,birds,pipes,ground,score)
         
 if __name__ == '__main__':
     main()   
