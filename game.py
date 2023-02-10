@@ -187,12 +187,14 @@ def main():
         
         add_pipe=False
         remove_pipes=[]
-        for counter, bird in enumerate(birds):
-            if pipe.colide(bird):
-                birds.pop(counter)
-            if not pipe.passed and bird.x>pipe.x:
-                pipe.passed=True
-                add_pipe=True
+    
+        for pipe in pipes:
+            for counter, bird in enumerate(birds):
+                if pipe.colide(bird):
+                    birds.pop(counter)
+                if not pipe.passed and bird.x>pipe.x:
+                    pipe.passed=True
+                    add_pipe=True
         
         pipe.move()
         if pipe.x+pipe.TOP_PIPE.get_width()<0:
