@@ -80,7 +80,7 @@ class Bird:
         screen.blit(rotated_sprite,rectangle.topleft)
 
     def get_mask(self):
-        pygame.mask.from_surface(self.sprite)
+        return pygame.mask.from_surface(self.sprite)
 
 class Pipe:
     DISTANCE=200
@@ -98,7 +98,7 @@ class Pipe:
         self.def_height()
 
     def def_height(self):
-        self.height=random.drange(50,450)
+        self.height=random.randrange(50,450)
         self.top_position=self.height-self.TOP_PIPE.get_height()
         self.base_position=self.height+self.DISTANCE
 
@@ -161,10 +161,10 @@ def draw_screen(screen,birds,pipes,ground,score):
     pygame.display.update()
 
 def main():
-    bird=[Bird(230,350)]
+    birds=[Bird(230,350)]
     ground=Ground(730)
-    pipe=[Pipe(700)]
-    screen=pygame.display.set_mode(SCREEN_WIDTH,SCREEN_HEIGHT)
+    pipes=[Pipe(700)]
+    screen=pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     score=0
     clock=pygame.time.Clock()
 
@@ -178,11 +178,39 @@ def main():
                 quit()
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_SPACE:
-                    for birds in bird:
+                    for bird in birds:
                         bird.jump()
+
+        for bird in birds:
+            bird.move()
+        ground.move()
+        
+        add_pipe=False
+        remove_pipes=[]
+        for counter, bird in enumerate(birds):
+            if pipe.colide(bird):
+                birds.pop(counter)
+            if not pipe.passed and bird.x>pipe.x:
+                pipe.passed=True
+                add_pipe=True
+        
+        pipe.move()
+        if pipe.x+pipe.TOP_PIPE.get_width()<0:
+            remove_pipes.append(pipe)
+
+        if add_pipe:
+            score+=1
+            pipe.append(Pipe(600))
+        for pipe in remove_pipes:
+            pipes.remove(pipe)
+
+        for counter,bird in enumerate(birds):
+            if(bird.y+bird.sprite.get_height())>ground.y or bird.y<0:
+                birds.pop(counter)
 
         draw_screen(screen,bird,pipe,ground,score)
         
-    
+if __name__ == '__main__':
+    main()   
 
 
