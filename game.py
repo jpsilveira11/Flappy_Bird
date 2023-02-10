@@ -167,6 +167,22 @@ def main():
     screen=pygame.display.set_mode(SCREEN_WIDTH,SCREEN_HEIGHT)
     score=0
     clock=pygame.time.Clock()
+
+    running=True
+    while running:
+        clock.tick(60)
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                running=False
+                pygame.quit()
+                quit()
+            if event.type==pygame.KEYDOWN:
+                if event.key==pygame.K_SPACE:
+                    for birds in bird:
+                        bird.jump()
+
+        draw_screen(screen,bird,pipe,ground,score)
+        
     
 
 
