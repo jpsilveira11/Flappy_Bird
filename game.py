@@ -161,5 +161,12 @@ def draw_screen(screen,birds,pipes,ground,score):
     pygame.display.update()
 
 def main():
-    pass
+    bird=[Bird(230,350)]
+    ground=Ground(730)
+    pipe=[Pipe(700)]
+    screen=pygame.display.set_mode(SCREEN_WIDTH,SCREEN_HEIGHT)
+    score=0
+    clock=pygame.time.Clock()
+    
+
 
