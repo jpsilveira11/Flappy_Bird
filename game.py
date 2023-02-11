@@ -3,7 +3,7 @@ import os
 import random
 import neat
 
-ai_is_playing=True
+ai_is_playing=False
 gen=0
 
 SCREEN_WIDTH=500
@@ -209,8 +209,12 @@ def main(genomes,config):
         if len(birds)>0:
             if len(pipes)>1 and birds[0].x>(pipes[0].x+pipes[0].TOP_PIPE.get_width()):
                 pipe_index=1
+        elif ai_is_playing:
+            running=False
+            break
         else:
             running=False
+            #run(path_to_config)
             break
 
         for counter,bird in enumerate(birds):
