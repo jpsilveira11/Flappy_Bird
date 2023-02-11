@@ -1,2 +1,4 @@
-# Flappy_Bird
- Clone do Flappy Bird utilizando pygame
+# Flappy_Bird + AI
+Clone do Flappy Bird usando a biblioteca pygame
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+Flappy Bird clone game using pygame library
