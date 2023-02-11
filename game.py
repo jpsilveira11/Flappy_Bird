@@ -3,7 +3,7 @@ import os
 import random
 import neat
 
-ai_is_playing=False
+ai_is_playing=True
 gen=0
 
 SCREEN_WIDTH=500
