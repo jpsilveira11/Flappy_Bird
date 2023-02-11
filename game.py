@@ -287,7 +287,3 @@ if __name__ == '__main__':
     path=os.path.dirname(__file__)
     path_to_config=os.path.join(path,'config.txt')
     run(path_to_config)
-
-    #main()   
-
-
