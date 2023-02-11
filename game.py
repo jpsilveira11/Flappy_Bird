@@ -1,6 +1,10 @@
 import pygame
 import os
 import random
+import neat
+
+ai_is_playing=True
+gen=0
 
 SCREEN_WIDTH=500
 SCREEN_HEIGHT=800
