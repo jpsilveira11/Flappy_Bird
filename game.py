@@ -157,6 +157,10 @@ def draw_screen(screen,birds,pipes,ground,score):
         bird.draw(screen)
     for pipe in pipes:
         pipe.draw(screen)
+
+    if ai_is_playing:
+        text=FONT.render(f'Gen: {gen}',1,(255,255,255))
+        screen.blit(text,(10,10))
     
     text=FONT.render(f'Score: {score}',1,(255,255,255))
     screen.blit(text,(SCREEN_WIDTH-10-text.get_width(),10))
