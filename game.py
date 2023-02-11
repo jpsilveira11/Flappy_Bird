@@ -167,8 +167,24 @@ def draw_screen(screen,birds,pipes,ground,score):
     ground.draw(screen)
     pygame.display.update()
 
-def main():
-    birds=[Bird(230,350)]
+def main(genomes,config):
+    
+    global gen
+    gen+=1
+    
+    if ai_is_playing:
+        networks=[]
+        genomes_list=[]
+        birds=[]
+        for _,genome in genomes:
+            network=neat.nn.FeedForwardNetwork.create(genome,config)
+            networks.append(network)
+            genome.fitness=0
+            genomes_list.append(genome)
+            birds.append(Bird(230,350))     
+    else:
+        birds=[Bird(230,350)]
+
     ground=Ground(730)
     pipes=[Pipe(700)]
     screen=pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
@@ -183,13 +199,31 @@ def main():
                 running=False
                 pygame.quit()
                 quit()
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_SPACE:
-                    for bird in birds:
-                        bird.jump()
+            if not ai_is_playing:
+                if event.type==pygame.KEYDOWN:
+                    if event.key==pygame.K_SPACE:
+                        for bird in birds:
+                            bird.jump()
 
-        for bird in birds:
+        pipe_index=0
+        if len(birds)>0:
+            if len(pipes)>1 and birds[0].x>(pipes[0].x+pipes[0].TOP_PIPE.get_width()):
+                pipe_index=1
+        else:
+            running=False
+            break
+
+        for counter,bird in enumerate(birds):
             bird.move()
+            if ai_is_playing:
+                genomes_list[counter].fitness+=0.1
+                output=networks[counter].activate((bird.y,
+                abs(bird.y-pipes[pipe_index].height),
+                abs(bird.y-pipes[pipe_index].base)))
+            
+                if output[0]>0.5:
+                    bird.jump()
+
         ground.move()
         
         add_pipe=False
@@ -199,6 +233,10 @@ def main():
             for counter, bird in enumerate(birds):
                 if pipe.colide(bird):
                     birds.pop(counter)
+                    if ai_is_playing:
+                        genomes_list[counter].fitness-=1
+                        genomes_list.pop(counter)
+                        networks.pop(counter)
                 if not pipe.passed and bird.x>pipe.x:
                     pipe.passed=True
                     add_pipe=True
@@ -209,16 +247,40 @@ def main():
         if add_pipe:
             score+=1
             pipes.append(Pipe(600))
+            if ai_is_playing:
+                for genome in genomes_list:
+                    genome.fitness+=5
         for pipe in remove_pipes:
             pipes.remove(pipe)
 
         for counter,bird in enumerate(birds):
             if(bird.y+bird.sprite.get_height())>ground.y or bird.y<0:
                 birds.pop(counter)
-
+                if ai_is_playing:
+                    genomes_list.pop(counter)
+                    networks.pop(counter)
+                    
         draw_screen(screen,birds,pipes,ground,score)
-        
+
+
+def run(path_to_config):
+    config=neat.config.Config(neat.DefaultGenome,
+                    neat.DefaultReproduction,
+                    neat.DefaultSpeciesSet,
+                    neat.DefaultStagnation,
+                    path_to_config)
+    population=neat.Population(config)
+    if ai_is_playing:
+        population.run(main)
+    else:
+        main(None,None)
+
+
 if __name__ == '__main__':
-    main()   
+    path=os.path.dirname(__file__)
+    path_to_config=os.path.join(path,'config.txt')
+    run(path_to_config)
+
+    #main()   
 
 
