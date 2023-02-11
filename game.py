@@ -274,6 +274,9 @@ def run(path_to_config):
                     neat.DefaultStagnation,
                     path_to_config)
     population=neat.Population(config)
+    population.add_reporter(neat.StdOutReporter(True))
+    population.add_reporter(neat.StatisticsReporter())
+
     if ai_is_playing:
         population.run(main)
     else:
